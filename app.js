@@ -1,30 +1,44 @@
-(function () {
-  document.addEventListener("DOMContentLoaded", function () {
-    const checkboxes = document.querySelectorAll("input[type='checkbox']");
-    checkboxes.forEach(cb => {
-      const key = "chapter_" + cb.parentElement.textContent.trim();
-      const isChecked = localStorage.getItem(key) === "true";
-      cb.checked = isChecked;
-      if (isChecked) {
-        cb.parentElement.classList.add("checked");
-      }
 
-      cb.addEventListener("change", function () {
-        localStorage.setItem(key, cb.checked);
-        cb.parentElement.classList.toggle("checked", cb.checked);
-      });
-    });
+document.addEventListener("DOMContentLoaded", () => {
+  const checkboxes = document.querySelectorAll('input[type="checkbox"][data-chapter]');
+  const storageKey = "bibleReadingProgress";
 
-    const resetButton = document.getElementById("reset-progress");
-    if (resetButton) {
-      resetButton.addEventListener("click", function () {
-        checkboxes.forEach(cb => {
-          const key = "chapter_" + cb.parentElement.textContent.trim();
-          localStorage.removeItem(key);
-          cb.checked = false;
-          cb.parentElement.classList.remove("checked");
-        });
-      });
+  // Load saved progress
+  const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+  checkboxes.forEach(cb => {
+    const chapterId = cb.dataset.chapter;
+    if (saved[chapterId]) {
+      cb.checked = true;
     }
   });
-})();
+
+  // Save progress on change
+  checkboxes.forEach(cb => {
+    cb.addEventListener("change", () => {
+      const chapterId = cb.dataset.chapter;
+      saved[chapterId] = cb.checked;
+      localStorage.setItem(storageKey, JSON.stringify(saved));
+    });
+  });
+
+  // Reset button
+  const resetBtn = document.getElementById('reset-progress')
+
+  resetBtn.addEventListener("click", () => {
+  checkboxes.forEach(cb => cb.checked = false);
+
+  localStorage.removeItem(storageKey);
+
+  Object.keys(saved).forEach(key => delete saved[key]);
+});
+
+
+
+
+  // Scroll to last checked
+  const checkedChapters = Array.from(checkboxes).filter(cb => cb.checked);
+  if (checkedChapters.length > 0) {
+    const lastChecked = checkedChapters[checkedChapters.length - 1];
+    lastChecked.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+});
