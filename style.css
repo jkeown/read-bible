@@ -1,3 +1,15 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* or 100% if body already fills the viewport */
+}
+
 p.checked {
   text-decoration: line-through;
   color: #888;
@@ -32,3 +44,14 @@ p.checked {
   font-size: 1.1rem;
   font-weight: 600;
 }
+#full-list {
+  position: relative; /* for scroll-to feature */
+  flex: 1;
+  min-height: 0; /* critical - see note below */
+  max-height: 500px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  padding: 0.5rem;
+}
+
+/* min-height: 0 By default, flex items won't shrink below their content's natural size, so a tall list would just push past the viewport and break scrolling instead of respecting the container. Setting min-height: 0 allows it to actually shrink to fit, which is what makes overflow-y: auto kick in and create the internal scrollbar. */

@@ -35,10 +35,24 @@ document.addEventListener("DOMContentLoaded", () => {
   // Toggle full list
   const toggleBtn = document.getElementById("toggle-list");
   const fullList = document.getElementById("full-list");
+
   toggleBtn.addEventListener("click", () => {
     const isHidden = fullList.hasAttribute("hidden");
     fullList.toggleAttribute("hidden");
     toggleBtn.textContent = isHidden ? "Hide full list" : "Show full list";
+
+    if (isHidden) {
+      // list was just opened - scroll it to the current chapter
+      const current = getNextChapter();
+      if (current) {
+        const target = current.parentElement; // the <p> wrapping the checkbox
+        const offset =
+          target.offsetTop -
+          fullList.clientHeight / 6 +
+          target.offsetHeight / 2;
+        fullList.scrollTop = offset;
+      }
+    }
   });
 
   // Next-up card
