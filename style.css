@@ -2,3 +2,33 @@ p.checked {
   text-decoration: line-through;
   color: #888;
 }
+
+#next-up-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  background: #fafafa;
+}
+
+.next-up-label {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: #888;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.25rem;
+}
+
+#next-up-chapter {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+#toggle-list {
+  margin-bottom: 1rem;
+}
+
+#all-done {
+  font-size: 1.1rem;
+  font-weight: 600;
+}

@@ -1,44 +1,80 @@
-
 document.addEventListener("DOMContentLoaded", () => {
-  const checkboxes = document.querySelectorAll('input[type="checkbox"][data-chapter]');
+  const checkboxes = Array.from(
+    document.querySelectorAll('input[type="checkbox"][data-chapter]'),
+  );
   const storageKey = "bibleReadingProgress";
 
-  // Load saved progress
   const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
-  checkboxes.forEach(cb => {
-    const chapterId = cb.dataset.chapter;
-    if (saved[chapterId]) {
-      cb.checked = true;
-    }
+  checkboxes.forEach((cb) => {
+    if (saved[cb.dataset.chapter]) cb.checked = true;
   });
 
-  // Save progress on change
-  checkboxes.forEach(cb => {
+  function saveProgress() {
+    checkboxes.forEach((cb) => {
+      saved[cb.dataset.chapter] = cb.checked;
+    });
+    localStorage.setItem(storageKey, JSON.stringify(saved));
+  }
+
+  checkboxes.forEach((cb) => {
     cb.addEventListener("change", () => {
-      const chapterId = cb.dataset.chapter;
-      saved[chapterId] = cb.checked;
-      localStorage.setItem(storageKey, JSON.stringify(saved));
+      saveProgress();
+      renderNextUp();
     });
   });
 
   // Reset button
-  const resetBtn = document.getElementById('reset-progress')
-
+  const resetBtn = document.getElementById("reset-progress");
   resetBtn.addEventListener("click", () => {
-  checkboxes.forEach(cb => cb.checked = false);
+    checkboxes.forEach((cb) => (cb.checked = false));
+    localStorage.removeItem(storageKey);
+    Object.keys(saved).forEach((key) => delete saved[key]);
+    renderNextUp();
+  });
 
-  localStorage.removeItem(storageKey);
+  // Toggle full list
+  const toggleBtn = document.getElementById("toggle-list");
+  const fullList = document.getElementById("full-list");
+  toggleBtn.addEventListener("click", () => {
+    const isHidden = fullList.hasAttribute("hidden");
+    fullList.toggleAttribute("hidden");
+    toggleBtn.textContent = isHidden ? "Hide full list" : "Show full list";
+  });
 
-  Object.keys(saved).forEach(key => delete saved[key]);
-});
+  // Next-up card
+  const nextUpCard = document.getElementById("next-up-card");
+  const nextUpDay = document.getElementById("next-up-day");
+  const nextUpChapter = document.getElementById("next-up-chapter");
+  const nextUpCheckbox = document.getElementById("next-up-checkbox");
+  const allDoneMsg = document.getElementById("all-done");
 
-
-
-
-  // Scroll to last checked
-  const checkedChapters = Array.from(checkboxes).filter(cb => cb.checked);
-  if (checkedChapters.length > 0) {
-    const lastChecked = checkedChapters[checkedChapters.length - 1];
-    lastChecked.scrollIntoView({ behavior: "smooth", block: "center" });
+  function getNextChapter() {
+    return checkboxes.find((cb) => !cb.checked);
   }
+
+  function renderNextUp() {
+    const next = getNextChapter();
+    if (!next) {
+      nextUpCard.hidden = true;
+      allDoneMsg.hidden = false;
+      return;
+    }
+    allDoneMsg.hidden = true;
+    nextUpCard.hidden = false;
+
+    const dayHeading = next.closest("section")?.querySelector("h4");
+    nextUpDay.textContent = dayHeading ? dayHeading.textContent : "";
+    nextUpChapter.textContent = next.parentElement.textContent.trim();
+
+    nextUpCheckbox.checked = false;
+    nextUpCheckbox.onchange = () => {
+      if (nextUpCheckbox.checked) {
+        next.checked = true;
+        saveProgress();
+        renderNextUp();
+      }
+    };
+  }
+
+  renderNextUp();
 });
