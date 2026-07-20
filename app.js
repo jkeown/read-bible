@@ -26,10 +26,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // Reset button
   const resetBtn = document.getElementById("reset-progress");
   resetBtn.addEventListener("click", () => {
-    checkboxes.forEach((cb) => (cb.checked = false));
-    localStorage.removeItem(storageKey);
-    Object.keys(saved).forEach((key) => delete saved[key]);
-    renderNextUp();
+    const userConfirmed = confirm(
+      "Are you sure you want to clear all progress?",
+    );
+    if (userConfirmed) {
+      checkboxes.forEach((cb) => (cb.checked = false));
+      localStorage.removeItem(storageKey);
+      Object.keys(saved).forEach((key) => delete saved[key]);
+      renderNextUp();
+    }
   });
 
   // Toggle full list
