@@ -48,10 +48,20 @@ p.checked {
   position: relative; /* for scroll-to feature */
   flex: 1;
   min-height: 0; /* critical - see note below */
-  max-height: 500px;
+  max-height: 70vh;
   overflow-y: auto;
   border: 1px solid #eee;
   padding: 0.5rem;
+  display: none;
+}
+
+#full-list:not([hidden]) {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+section{
+  flex: 0 0 50%;
 }
 
 /* min-height: 0 By default, flex items won't shrink below their content's natural size, so a tall list would just push past the viewport and break scrolling instead of respecting the container. Setting min-height: 0 allows it to actually shrink to fit, which is what makes overflow-y: auto kick in and create the internal scrollbar. */
