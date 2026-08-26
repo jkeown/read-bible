@@ -10,17 +10,17 @@
   <body>
     <header>
       <h1>Chronological Bible</h1>
-      <button id="reset-progress">Reset Progress</button>
+      
     </header>
     <main>
       <section id="reading-card" hidden>
   <p class="next-up-label">Current</p>
   <h4 id="current-day"></h4>
   <p id="current-chapter"></p>
-  <label>
-    <input type="checkbox" id="next-up-checkbox" />
+  <label class="btn mark-read" for="next-up-checkbox">
+    <input type="checkbox" id="next-up-checkbox" class=" visually-hidden" />
     Mark as read
-  </label>
+</label>
 
   <div id="upcoming-preview">
     <p class="next-up-label">Next up</p>
@@ -29,9 +29,11 @@
   </div>
 </section>
 
-      <p id="all-done" hidden>🎉 You're all caught up!</p>
-
-      <button id="toggle-list" type="button">Show full list</button>
+      <p id="all-done" hidden>🎉 You've read the entire Bible!</p>
+<div class="btn-group">
+  <button id="toggle-list" type="button" class="btn toggle-list">Show full list</button>
+  <button id="reset-progress" class="btn reset-progress" type="button">Reset Progress</button>
+</div>
 
       <div id="full-list" hidden>
         <section>
@@ -2394,8 +2396,8 @@
         </section>
       </div>
       <!-- #full-list -->
-      <!-- <script src="app.js"></script> -->
-      <script src="app-dev.js"></script>
+      <script src="app.js"></script>
+      <!-- <script src="app-dev.js"></script> -->
     </main>
   </body>
 </html>

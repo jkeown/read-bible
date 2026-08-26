@@ -1,7 +1,38 @@
+:root {
+  /* Page & card backgrounds */
+  --color-bg: #F7FAF8;
+  --color-card-bg: #FFFFFF;
+
+  /* Text */
+  --color-text: #1B2E22;
+  --color-text-muted: #5C6F63;
+
+  /* Borders */
+  --color-border: #D8E3DC;
+  --color-border-strong: #C3D6CA;
+
+  /* Primary (forest green) */
+  --color-primary: #2D6A4F;
+  --color-primary-text: #F3FAF6;
+
+  /* Default/neutral button */
+  --color-default: #EAF2ED;
+  --color-default-text: #1B2E22;
+
+  /* Danger */
+  --color-danger: #B3261E;
+  --color-danger-text: #FCEEEE;
+
+  /* Focus */
+  --color-focus: #4A90E2;
+}
+
 html,
 body {
   height: 100%;
   margin: 0;
+  background: var(--color-primary);
+  color: var(--color-text);
 }
 
 main {
@@ -10,23 +41,31 @@ main {
   height: 100vh; /* or 100% if body already fills the viewport */
 }
 
-p.checked {
+h1 {
+  color: var(--color-bg)
+}
+/* input[type='checkbox']:checked ~ p {
+  text-decoration: line-through;
+  color: #888;
+} */
+ p:has(input:checked) {
   text-decoration: line-through;
   color: #888;
 }
 
 #reading-card {
-  border: 1px solid #ddd;
+  /* border: 1px solid #ddd; */
   border-radius: 8px;
   padding: 1rem 1.25rem;
   margin-bottom: 1rem;
-  background: #fafafa;
+  background: var(--color-card-bg);
+  border-color: var(--color-border);
 }
 
 .next-up-label {
   text-transform: uppercase;
   font-size: 0.75rem;
-  color: #888;
+  color: var(--color-text-muted);
   letter-spacing: 0.05em;
   margin: 0 0 0.25rem;
 }
@@ -35,9 +74,8 @@ p.checked {
   font-size: 1.1rem;
   font-weight: 600;
 }
-
-#toggle-list {
-  margin-bottom: 1rem;
+#upcoming-preview{
+  background: var(--color-bg);
 }
 
 #all-done {
@@ -50,9 +88,11 @@ p.checked {
   min-height: 0; /* critical - see note below */
   max-height: 70vh;
   overflow-y: auto;
-  border: 1px solid #eee;
+  /* border: 1px solid #eee; */
   padding: 0.5rem;
   display: none;
+  background: var(--color-card-bg);
+  border-color: var(--color-border);
 }
 
 #full-list:not([hidden]) {
@@ -65,3 +105,81 @@ section:not(#reading-card){
 }
 
 /* min-height: 0 By default, flex items won't shrink below their content's natural size, so a tall list would just push past the viewport and break scrolling instead of respecting the container. Setting min-height: 0 allows it to actually shrink to fit, which is what makes overflow-y: auto kick in and create the internal scrollbar. */
+
+/* Mark Read Btn */
+/* Hide the checkbox but keep it accessible/functional */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Style the label like a button */
+.btn {
+  display: inline-block;
+  cursor: pointer;
+  user-select: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  /* border: 1px solid #ccc;
+  background: var(--btn-bg, #f5f5f5); */
+  font-size: 0.9rem;
+  font-weight: 600;
+  /* color: var(--btn-color, #333); */
+  transition: background 0.15s ease, border-color 0.15s ease;
+  border: 1px solid var(--btn-border, transparent);
+  background: var(--btn-color, var(--color-default));
+  color: var(--btn-text-color, var(--color-default-text));
+}
+
+/* .btn:hover {
+  background: color-mix(in srgb, var(--btn-color, #f5f5f5) 96%, black);
+} */
+
+.btn:hover {
+  background: var(--btn-hover-bg, color-mix(in srgb, var(--btn-color, var(--color-default)) 90%, black));
+}
+
+.btn:active {
+  background: var(--btn-hover-bg, color-mix(in srgb, var(--btn-color, var(--color-default)) 80%, black));
+}
+
+/* Keyboard focus visibility */
+.btn:has(input:focus-visible) {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.btn::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+.btn-group {
+  display: flex;
+  margin-bottom: 1rem;
+  justify-content: space-evenly;
+}
+
+.mark-read{
+--btn-color: var(--color-primary);
+  --btn-text-color: var(--color-primary-text);
+  --btn-border: var(--color-primary);
+}
+
+.reset-progress{
+  --btn-color: var(--color-danger);
+  --btn-text-color: var(--color-danger-text);
+  --btn-border: var(--color-danger);
+}

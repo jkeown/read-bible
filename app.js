@@ -77,8 +77,6 @@ function getNextChapter() {
 function renderReading() {
   const current = getNextChapter();
 
-  console.log("current");
-
   if (!current) {
     readingCard.hidden = true;
     allDoneMsg.hidden = false;
