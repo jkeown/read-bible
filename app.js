@@ -90,10 +90,6 @@ function renderReading() {
   currentDay.textContent = currentDayHeading ? currentDayHeading.textContent : "";
   currentChapter.textContent = current.parentElement.textContent.trim();
 
-  // Upcoming chapter (the very next one in reading order, checked or not)
-  // const currentIndex = checkboxes.indexOf(current);
-  // const upcoming = checkboxes[currentIndex + 1];
-
   // Upcoming chapter — the next UNCHECKED one after current, skipping any
   // already-checked chapters that come later out of order
   const currentIndex = checkboxes.indexOf(current);
@@ -122,4 +118,4 @@ function renderReading() {
 
 renderReading();
 
-}); // IIFE
+}); // end DOMContentLoaded
