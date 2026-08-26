@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   checkboxes.forEach((cb) => {
     cb.addEventListener("change", () => {
       saveProgress();
-      renderNextUp();
+      renderReading();
     });
   });
 
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
       checkboxes.forEach((cb) => (cb.checked = false));
       localStorage.removeItem(storageKey);
       Object.keys(saved).forEach((key) => delete saved[key]);
-      renderNextUp();
+      renderReading();
     }
   });
 
@@ -60,40 +60,61 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Next-up card
-  const nextUpCard = document.getElementById("next-up-card");
-  const nextUpDay = document.getElementById("next-up-day");
-  const nextUpChapter = document.getElementById("next-up-chapter");
-  const nextUpCheckbox = document.getElementById("next-up-checkbox");
-  const allDoneMsg = document.getElementById("all-done");
+// Next-up card
+const readingCard = document.getElementById("reading-card");
+const currentDay = document.getElementById("current-day");
+const currentChapter = document.getElementById("current-chapter");
+const readingDay = document.getElementById("next-up-day");
+const readingChapter = document.getElementById("next-up-chapter");
+const upcomingPreview = document.getElementById("upcoming-preview");
+const readingCheckbox = document.getElementById("next-up-checkbox");
+const allDoneMsg = document.getElementById("all-done");
 
-  function getNextChapter() {
-    return checkboxes.find((cb) => !cb.checked);
+function getNextChapter() {
+  return checkboxes.find((cb) => !cb.checked);
+}
+
+function renderReading() {
+  const current = getNextChapter();
+
+  console.log("current");
+
+  if (!current) {
+    readingCard.hidden = true;
+    allDoneMsg.hidden = false;
+    return;
+  }
+  allDoneMsg.hidden = true;
+  readingCard.hidden = false;
+
+  // Current chapter
+  const currentDayHeading = current.closest("section")?.querySelector("h4");
+  currentDay.textContent = currentDayHeading ? currentDayHeading.textContent : "";
+  currentChapter.textContent = current.parentElement.textContent.trim();
+
+  // Upcoming chapter (the very next one in reading order, checked or not)
+  const currentIndex = checkboxes.indexOf(current);
+  const upcoming = checkboxes[currentIndex + 1];
+
+  if (upcoming) {
+    const upcomingDayHeading = upcoming.closest("section")?.querySelector("h4");
+    readingDay.textContent = upcomingDayHeading ? upcomingDayHeading.textContent : "";
+    readingChapter.textContent = upcoming.parentElement.textContent.trim();
+    upcomingPreview.hidden = false;
+  } else {
+    upcomingPreview.hidden = true; // current is the last chapter in the plan
   }
 
-  function renderNextUp() {
-    const next = getNextChapter();
-    if (!next) {
-      nextUpCard.hidden = true;
-      allDoneMsg.hidden = false;
-      return;
+  readingCheckbox.checked = false;
+  readingCheckbox.onchange = () => {
+    if (readingCheckbox.checked) {
+      current.checked = true;
+      saveProgress();
+      renderReading();
     }
-    allDoneMsg.hidden = true;
-    nextUpCard.hidden = false;
+  };
+}
 
-    const dayHeading = next.closest("section")?.querySelector("h4");
-    nextUpDay.textContent = dayHeading ? dayHeading.textContent : "";
-    nextUpChapter.textContent = next.parentElement.textContent.trim();
+renderReading();
 
-    nextUpCheckbox.checked = false;
-    nextUpCheckbox.onchange = () => {
-      if (nextUpCheckbox.checked) {
-        next.checked = true;
-        saveProgress();
-        renderNextUp();
-      }
-    };
-  }
-
-  renderNextUp();
-});
+}); // IIFE

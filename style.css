@@ -15,7 +15,7 @@ p.checked {
   color: #888;
 }
 
-#next-up-card {
+#reading-card {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1rem 1.25rem;
@@ -60,7 +60,7 @@ p.checked {
   flex-wrap: wrap;
 }
 
-section{
+section:not(#reading-card){
   flex: 0 0 50%;
 }
 

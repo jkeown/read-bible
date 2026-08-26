@@ -13,15 +13,21 @@
       <button id="reset-progress">Reset Progress</button>
     </header>
     <main>
-      <section id="next-up-card" hidden>
-        <p class="next-up-label">Next up</p>
-        <h4 id="next-up-day"></h4>
-        <p id="next-up-chapter"></p>
-        <label>
-          <input type="checkbox" id="next-up-checkbox" />
-          Mark as read
-        </label>
-      </section>
+      <section id="reading-card" hidden>
+  <p class="next-up-label">Current</p>
+  <h4 id="current-day"></h4>
+  <p id="current-chapter"></p>
+  <label>
+    <input type="checkbox" id="next-up-checkbox" />
+    Mark as read
+  </label>
+
+  <div id="upcoming-preview">
+    <p class="next-up-label">Next up</p>
+    <h4 id="next-up-day"></h4>
+    <p id="next-up-chapter"></p>
+  </div>
+</section>
 
       <p id="all-done" hidden>🎉 You're all caught up!</p>
 
@@ -2388,7 +2394,8 @@
         </section>
       </div>
       <!-- #full-list -->
-      <script src="app.js"></script>
+      <!-- <script src="app.js"></script> -->
+      <script src="app-dev.js"></script>
     </main>
   </body>
 </html>
