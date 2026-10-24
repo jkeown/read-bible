@@ -47,15 +47,12 @@ document.addEventListener("DOMContentLoaded", () => {
     toggleBtn.textContent = isHidden ? "Hide full list" : "Show full list";
 
     if (isHidden) {
-      // list was just opened - scroll it to the current chapter
-      const current = getNextChapter();
-      if (current) {
-        const target = current.parentElement; // the <p> wrapping the checkbox
-        const offset =
-          target.offsetTop -
-          fullList.clientHeight / 6 +
-          target.offsetHeight / 2;
-        fullList.scrollTop = offset;
+      // list was just opened - scroll it to the top of the current day
+      const daySection = getNextChapter()?.closest("section");
+      if (daySection) {
+        const listTop = fullList.getBoundingClientRect().top;
+        const dayTop = daySection.getBoundingClientRect().top;
+        fullList.scrollTop += dayTop - listTop;
       }
     }
   });
